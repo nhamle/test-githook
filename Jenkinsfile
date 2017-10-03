@@ -8,7 +8,8 @@ pipeline {
     }
     stage('deploy approval') {
       steps {
-        input(message: 'deploy to production?', id: 'deploy', ok: 'true', submitterParameter: 'approveUser', submitter: 'nham')
+        deployAction = input(message: 'deploy to production?', id: 'deploy', ok: 'deploy', submitterParameter: 'approveUser', submitter: 'nham', requestTimeout: 15000)
+        echo ("user input: "+userInput)
       }
     }
     stage('deploy') {
