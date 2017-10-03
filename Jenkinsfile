@@ -6,9 +6,23 @@ pipeline {
         sleep 5
       }
     }
-    stage('') {
+    stage('deploy approval') {
       steps {
         input(message: 'deploy to production?', id: 'deploy', ok: 'true', submitterParameter: 'approveUser', submitter: 'nham')
+      }
+    }
+    stage('deploy') {
+      steps {
+        parallel(
+          "deploy": {
+            sh 'echo "deploy"'
+            
+          },
+          "deploy abort": {
+            sh 'echo \'abort\''
+            
+          }
+        )
       }
     }
   }
