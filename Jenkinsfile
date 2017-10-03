@@ -8,21 +8,15 @@ pipeline {
     }
     stage('deploy approval') {
       steps {
-        input(message: 'deploy to production?', id: 'deploy', ok: 'deploy', submitterParameter: 'approveUser', submitter: 'nham')
+        timeout(time: 15) {
+          input(message: 'deploy to production?', id: 'deploy', ok: 'deploy', submitter: 'nham', submitterParameter: 'approveUser')
+        }
+        
       }
     }
     stage('deploy') {
       steps {
-        parallel(
-          "deploy": {
-            sh 'echo "deploy"'
-            
-          },
-          "deploy abort": {
-            sh 'echo \'abort\''
-            
-          }
-        )
+        sh 'echo "deploy"'
       }
     }
   }
